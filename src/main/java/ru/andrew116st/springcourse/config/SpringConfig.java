@@ -108,7 +108,7 @@ public class SpringConfig implements WebMvcConfigurer {
     }
 
     @Bean
-    public PlatformTransactionManager TransactionManager(){
+    public PlatformTransactionManager transactionManager(){
         JpaTransactionManager transactionManager = new JpaTransactionManager();
         transactionManager.setEntityManagerFactory(entityManagerFactory().getObject());
 
