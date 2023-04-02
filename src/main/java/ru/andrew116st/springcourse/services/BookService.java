@@ -1,8 +1,12 @@
 package ru.andrew116st.springcourse.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import ru.andrew116st.springcourse.controllers.BooksController;
 import ru.andrew116st.springcourse.models.Books;
 import ru.andrew116st.springcourse.repositories.BookRepository;
 import ru.andrew116st.springcourse.models.Person;
@@ -77,7 +81,12 @@ public class BookService {
 
 
     }
+    @Transactional
 
+    public List<Books> findAll (int page, int size){
+
+        return bookRepository.findAll(PageRequest.of(page, size)).getContent();
+    }
 
 
 

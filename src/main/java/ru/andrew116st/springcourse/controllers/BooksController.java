@@ -1,6 +1,9 @@
 package ru.andrew116st.springcourse.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -27,10 +30,24 @@ public class BooksController {
     }
 
     @GetMapping()
-    public String index(Model model) {
-        model.addAttribute("books", bookService.findAll());
+
+    public String index(Model model, @RequestParam(value = "page",required = false) String page,
+                        @RequestParam(value = "size",required = false ) String size) {
+
+        if (page != null && size != null){
+
+            int currentPage = Integer.parseInt(page);
+            int currentSize = Integer.parseInt(size);
+
+            model.addAttribute("books", bookService.findAll(currentPage, currentSize));
+
+        }else{
+            model.addAttribute("books", bookService.findAll());
+
+        }
 
         return "books/index";
+
     }
 
     @GetMapping("/{id}")
@@ -93,4 +110,10 @@ public class BooksController {
         bookService.indexPersonBook(id, selectedPerson.getId());
         return "redirect:/books/" + id;
     }
+
+
+
+
+
+
 }
