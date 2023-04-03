@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -32,20 +33,38 @@ public class BooksController {
     @GetMapping()
 
     public String index(Model model, @RequestParam(value = "page",required = false) String page,
-                        @RequestParam(value = "size",required = false ) String size) {
+                        @RequestParam(value = "size",required = false ) String size,
+                        @RequestParam(value = "sort",required = false ) String sort){
 
-        if (page != null && size != null){
+        boolean paginationEnabled = (page != null && size != null);
+        boolean sortingEnabled = (sort != null && sort.equals("true"));
+
+
+        // пагинация - сортировки НЕТ
+        if (paginationEnabled && !sortingEnabled){
 
             int currentPage = Integer.parseInt(page);
             int currentSize = Integer.parseInt(size);
 
             model.addAttribute("books", bookService.findAll(currentPage, currentSize));
 
-        }else{
+            // пагинация + сортировка ЕСТЬ
+        }else if (paginationEnabled && sortingEnabled) {
+
+            int currentPage = Integer.parseInt(page);
+            int currentSize = Integer.parseInt(size);
+
+            model.addAttribute("books",bookService.findComboFatality(currentPage, currentSize));
+
+            // только сортировка
+        } else if (sortingEnabled){
+            model.addAttribute("books", bookService.findAllSortByYear());
+
+            // по умолчанию
+        } else{
             model.addAttribute("books", bookService.findAll());
 
         }
-
         return "books/index";
 
     }
