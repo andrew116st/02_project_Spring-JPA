@@ -1,5 +1,6 @@
 package ru.andrew116st.springcourse.services;
 
+import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
@@ -96,6 +97,20 @@ public class BookService {
 
         return bookRepository.findAll(PageRequest.of(page, size, Sort.by("year"))).getContent();
     }
+
+
+    @Transactional
+    public List<Books> findTheRightBook (String query){
+
+        List<Books> foundBooks = bookRepository.findByNameContainingIgnoreCase(query);
+
+        for(Books findBooks : foundBooks){
+            Hibernate.initialize(findBooks.getOwner());
+        }
+
+        return foundBooks;
+    }
+
 
 
 

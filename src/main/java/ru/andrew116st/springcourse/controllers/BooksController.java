@@ -131,6 +131,20 @@ public class BooksController {
     }
 
 
+    @GetMapping("/search")
+    public String searchBookToPeople () {
+
+
+        return "books/search";
+    }
+
+    @PostMapping("/search")
+    public String foundBookToPeople(@RequestParam(name = "query") String query,Model model){
+        model.addAttribute("books", bookService.findTheRightBook(query));
+
+        return "books/search";
+    }
+
 
 
 
