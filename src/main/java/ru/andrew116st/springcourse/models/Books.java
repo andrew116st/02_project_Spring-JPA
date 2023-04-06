@@ -4,14 +4,13 @@ import javax.validation.constraints.Min;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
 import javax.persistence.*;
+import java.util.Date;
 
 
 @Entity
 @Table (name = "Books")
 
 public class Books {
-
-
 
     @ManyToOne
     @JoinColumn(name = "person_id", referencedColumnName = "id")
@@ -36,17 +35,29 @@ public class Books {
     @Column(name = "year")
     private int year;
 
+    @Transient
+    private boolean delay;
+
+
+
+    @Column (name= "created_at")
+    @Temporal(TemporalType.TIMESTAMP)
+
+    private Date createdAt;
+
+
     public Books(){
 
     }
 
 
-    public Books(int id, String name, String author, int year) {
+    public Books(int id, String name, String author, int year, boolean delay, Date created_at) {
         this.id = id;
         this.name = name;
         this.author = author;
         this.year = year;
-
+        this.delay = delay;
+        this.createdAt = createdAt;
     }
 
     public int getId() {
@@ -89,6 +100,18 @@ public class Books {
 
     public void setOwner(Person owner) {
         this.owner = owner;
+    }
+
+    public boolean getDelay() {return delay;}
+
+    public void setDelay(boolean delay) {this.delay = delay;}
+
+    public Date getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(Date createdAt) {
+        this.createdAt = createdAt;
     }
 
 

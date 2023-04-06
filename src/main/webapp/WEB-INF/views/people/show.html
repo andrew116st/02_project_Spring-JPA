@@ -19,7 +19,8 @@
     <b>Книги:</b>
 
        <div th:each="book : ${books}">
-    <p th:text="${book.getName() + ', ' + book.getAuthor() + ', ' + book.getYear()}">user</p>
+           <a th:style="${book.getDelay()} ? 'color: red' : 'color: black'"
+              th:text="${book.getName() + ', ' + book.getAuthor() + ', ' + book.getYear()}">user</a>
     </div>
 </div>
 

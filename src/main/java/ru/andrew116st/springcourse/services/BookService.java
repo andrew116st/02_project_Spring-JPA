@@ -11,6 +11,7 @@ import ru.andrew116st.springcourse.repositories.BookRepository;
 import ru.andrew116st.springcourse.models.Person;
 import ru.andrew116st.springcourse.repositories.PeopleRepository;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -77,7 +78,7 @@ public class BookService {
         Optional<Person> foundPerson = peopleRepository.findById(idPerson);
 
         foundBook.get().setOwner(foundPerson.get());
-
+        foundBook.get().setCreatedAt(new Date());
 
     }
     @Transactional

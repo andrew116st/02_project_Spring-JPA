@@ -7,6 +7,9 @@ import ru.andrew116st.springcourse.models.Books;
 import ru.andrew116st.springcourse.models.Person;
 import ru.andrew116st.springcourse.repositories.BookRepository;
 import ru.andrew116st.springcourse.repositories.PeopleRepository;
+
+import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -60,9 +63,20 @@ public class PeopleService {
 
         Hibernate.initialize(foundPerson.get().getBooks());
 
-        return foundPerson.get().getBooks();
+        List<Books> currentBooks = foundPerson.get().getBooks();
 
+        for(Books findCurrentBook : currentBooks){
 
+            final int tenDayMs = 864000000;
+
+            Long createBookPersonDate = findCurrentBook.getCreatedAt().getTime();
+            Long currentDate = new Date().getTime();
+
+            findCurrentBook.setDelay((currentDate - createBookPersonDate) > tenDayMs);
+
+        }
+
+        return currentBooks;
     }
 
 
